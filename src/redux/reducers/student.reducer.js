@@ -1,3 +1,4 @@
+import { combineReducers } from "redux";
 const student = (state = [], action) => {
     switch (action.type) {
       case 'SET_STUDENT':
@@ -11,5 +12,24 @@ const student = (state = [], action) => {
   
     }
   };
-  
-  export default student;
+  const checkInTime = (state =[], action) =>{
+    switch (action.type){
+        case 'SET_TIME':
+            return action.payload;
+        default: 
+            return state; 
+    }
+  }
+  const checkOutTime = (state = [], action) =>{
+    switch (action.type){
+        case 'SET_CHECKOUT':
+            return action.payload;
+        default:
+            return state; 
+    }
+  }
+  export default combineReducers({
+    student, 
+    checkInTime, 
+    checkOutTime, 
+  })

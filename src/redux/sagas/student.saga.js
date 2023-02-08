@@ -1,4 +1,5 @@
 import axios from "axios";
+import { func } from "prop-types";
 import { takeEvery, put } from "redux-saga/effects";
 
 
@@ -21,8 +22,28 @@ function* addStudent(action){
       console.log('Error with addStudent in StudentTable', error)
     }
   }
+  function* getTime(action){
+    try {
+        const response = yield axios.post('/api/student/checkin', action.payload);
+        console.log(response);
+        yield put ({type: 'SET_TIME', payload: response.data});
+    } catch (error){
+        console.log('Error in getTime in StudentCheck', error)
+    }
+  }
+  function* getCheckOut(action){
+    try {
+        const response = yield axios.post('/api/student/checkout', action.payload);
+        console.log(response);
+        yield put ({type: 'SET_CHECKOUT', payload:response.data});
+    } catch (error){
+        console.log('Error in getCheckOut', error)
+    }
+  }
   function* studentSaga() {
     yield takeEvery('FETCH_STUDENT', getStudent)
     yield takeEvery('ADD_STUDENT', addStudent)
+    yield takeEvery('FETCH_TIME', getTime)
+    yield takeEvery('FETCH_CHECKOUT', getCheckOut)
   }
 export default studentSaga;

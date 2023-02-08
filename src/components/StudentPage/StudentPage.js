@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import StudentCheck from './StudentCheck';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,7 +8,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 function StudentPage() {
   const dispatch = useDispatch();
-  const student = useSelector(store => store.student)
+  const student = useSelector(store => store.student.student)
   const user = useSelector(store => store.user)
   const [studentInput, setStudentInput] = useState('');
   const [ageInput, setAgeInput] = useState('');
@@ -42,26 +43,16 @@ function StudentPage() {
 
 }
 return (
-    <div> Student List 
-          {student.map((student) =>{
-             return (
-              <Card variant="outlined" sx={{ minWidth: 275 }}>
-                <CardContent>
-                  <div> 
-                    Student Name: {student.name}
-                  </div>
-                  <div> 
-                    Student Age: {student.age}
-                  </div>
-                </CardContent>
-                <CardActions>
-                  <Button size="small">Check In Student</Button>
-                </CardActions>
-              </Card>
-            );
-          })}
-       
-    </div>
+  <>
+  
+    <h2> Student List </h2>
+      <ul>
+        {student.map (student =>(
+        <StudentCheck key ={student.id} student={student}/>
+        ))}
+      </ul>
+  
+  </>
 )
 }
 export default StudentPage; 
