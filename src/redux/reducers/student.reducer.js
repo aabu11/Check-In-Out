@@ -3,10 +3,15 @@ const student = (state = [], action) => {
     switch (action.type) {
       case 'SET_STUDENT':
         return action.payload;
-      // case 'ADD_TO_SHELF':
-      //   return [...state, state];
-      // case 'DELETE_ITEM':
-      //   return [...state];
+      default:
+        return state;
+  
+    }
+  };
+  const newStudent = (state = [], action) => {
+    switch (action.type) {
+      case 'FETCH__NEW_STUDENT':
+        return action.payload;
       default:
         return state;
   
@@ -28,8 +33,18 @@ const student = (state = [], action) => {
             return state; 
     }
   }
+  const deleteTime =(state =[], action) =>{
+    switch (action.type){
+        case 'DELETE_ROW':
+            return action.payload;
+        default: 
+            return state; 
+    }
+  }
   export default combineReducers({
     student, 
     checkInTime, 
     checkOutTime, 
+    deleteTime,
+    newStudent
   })

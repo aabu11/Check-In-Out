@@ -20,6 +20,7 @@ import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import StudentPage from '../StudentPage/StudentPage';
+import AddStudent from '../Add Student/AddStudent';
 
 import './App.css';
 
@@ -82,7 +83,21 @@ function App() {
               <LoginPage />
             }
           </Route>
-
+          <Route
+            exact
+            path="/addstudent"
+          >
+            {/* {user.id ?
+              // If the user is already logged in, 
+              // redirect to the /user page
+              <Redirect to="/addstudent" />
+              :
+              // Otherwise, show the login page
+              <AddStudent />
+            } */}
+            <AddStudent />
+          </Route>
+            
           <Route
             exact
             path="/registration"

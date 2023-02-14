@@ -5,7 +5,6 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { func } from "prop-types";
 function StudentCheck({ student }) {
   const checkIns = useSelector((store) => store.student.checkInTime);
 
@@ -22,13 +21,20 @@ function StudentCheck({ student }) {
     });
   };
   const checkOut = (id) => {
-    console.log('This a test', id)
+    console.log("This a test", id);
     const time = new Date();
     dispatch({
       type: "FETCH_CHECKOUT",
       payload: { checkOut: time, id },
     });
   };
+  const resetButton = (id) => {
+    dispatch({
+      type: "SAGA_DELETE_ROW",
+      payload: student.id,
+    });
+  };
+
   return (
     <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
@@ -46,9 +52,12 @@ function StudentCheck({ student }) {
           size="small"
         >
           {" "}
-          Check Out Studentt
+          Check Out Student
         </Button>
-        <Button size="small"> Reset</Button>
+        <Button onClick={resetButton} size="small">
+          {" "}
+          Reset
+        </Button>
       </CardActions>
     </Card>
   );
