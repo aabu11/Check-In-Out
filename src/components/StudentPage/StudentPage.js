@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import StudentCheck from "./StudentCheck";
+import './Student.css'
 function StudentPage() {
   const dispatch = useDispatch();
   const student = useSelector((store) => store.student.student);
@@ -10,6 +11,7 @@ function StudentPage() {
   const [addressInput, setAddressInput] = useState("");
   const [parentInput, setParentInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
+
 
   useEffect(() => {
     dispatch({
@@ -35,7 +37,9 @@ function StudentPage() {
   };
   return (
     <>
-      <h2> Student List </h2>
+    <div >
+      <h2 className="center"> Student List </h2>
+      </div>
       <ul>
         {student.map((student) => (
           <StudentCheck key={student.id} student={student} />

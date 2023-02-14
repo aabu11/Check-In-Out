@@ -7,9 +7,11 @@ const router = express.Router();
  */
 router.get("/", (req, res) => {
   // GET route code here
-  const sqlQuery = `SELECT * FROM student;`;
+   const currentUser = req.user.id;
+  const sqlQuery = `SELECT * FROM student WHERE "user_id" = $1;`;
+  const sqlValue = [currentUser];
   pool
-    .query(sqlQuery)
+    .query(sqlQuery,sqlValue)
     .then((result) => {
       const students = result.rows;
       //   console.log("GET - All students:", students);
