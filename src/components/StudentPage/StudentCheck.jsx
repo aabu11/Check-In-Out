@@ -4,10 +4,12 @@ import CardContent from "@mui/material/CardContent";
 import swal from 'sweetalert';
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 function StudentCheck({ student }) {
   const checkIns = useSelector((store) => store.student.checkInTime);
 
   const dispatch = useDispatch();
+  const history = useHistory(); 
   const checkIn = () => {
     var time = new Date();
     swal(`STUDENT IS CHECKED IN ${student.name}`);
@@ -37,7 +39,11 @@ function StudentCheck({ student }) {
         buttons: ["NO!", "YES!"],
       });
   };
-
+  const editStudentButton = () =>{
+    console.log('Testing This Button')
+    history.push(`/student/edit/${student.id}`)
+   
+  }
   return (
     <Card variant="outlined" sx={{ minWidth: 275 }}>
       <CardContent>
@@ -59,7 +65,9 @@ function StudentCheck({ student }) {
         <Button onClick={resetButton} size="small" >
           Reset
         </Button>
-        
+        <Button onClick={editStudentButton} size="small" >
+          Edit Student Info
+        </Button>
       </CardActions>
     </Card>
   );

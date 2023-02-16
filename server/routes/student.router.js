@@ -1,3 +1,4 @@
+const { response } = require("express");
 const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
@@ -22,6 +23,21 @@ router.get("/", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+router.get('/:id', (req, res) =>{
+    const idOfStudentToGet = req.params.id
+    const sqlText = `
+    SELECT * FROM "student" WHERE "id"=$1;`
+    const sqlValue = [idOfStudentToGet];
+    pool. query (sqlText, sqlValue)
+        .then((result) =>{
+            const response = result.rows
+            res.send(response)
+        }).catch ((dbErr) =>{
+            console.log('Damn Cuz', dbErr)
+            res.sendStatus(500)
+        }) 
+})
 /**
  * POST route template
  */
@@ -78,6 +94,8 @@ router.put("/checkout/:id", (req, res) => {
       res.sendStatus(500);
     });
 });
+
+
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
   console.log("req.params", id);

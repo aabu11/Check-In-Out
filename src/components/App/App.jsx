@@ -21,7 +21,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import StudentPage from '../StudentPage/StudentPage';
 import AddStudent from '../Add Student/AddStudent';
-
+import Edit_Student from '../StudentPage/Edit_Student';
 import './App.css';
 
 function App() {
@@ -97,7 +97,19 @@ function App() {
             } */}
             <AddStudent />
           </Route>
-            
+          <Route
+            exact
+            path="/student/edit/:id">
+            {/* {user.id ?
+              // If the user is already logged in, 
+              // redirect to the /user page 
+              <Redirect to="/addstudent" />
+              :
+              // Otherwise, show the login page
+            //   <Edit_Student/>
+            // }  */}
+            <Edit_Student />
+          </Route>
           <Route
             exact
             path="/registration"
@@ -132,6 +144,7 @@ function App() {
             path="/student">
             <StudentPage />
           </ProtectedRoute>
+          
 
           {/* If none of the other routes matched, we will show a 404. */}
           <Route>

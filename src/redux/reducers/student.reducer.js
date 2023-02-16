@@ -41,10 +41,21 @@ const student = (state = [], action) => {
             return state; 
     }
   }
+
+//   const editStudentInfo = (state = [], action) => {
+//     switch (action.type) {
+//       case "SET_STUDENT_TO_EDIT":
+//         return action.payload;
+//       default:
+//         return state;
+//     }
+//   };
   export default combineReducers({
     student, 
     checkInTime, 
     checkOutTime, 
     deleteTime,
-    newStudent
+    newStudent, 
+    // editStudentInfo, 
+
   })

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { func } from "prop-types";
 import { takeEvery, put } from "redux-saga/effects";
 
 function* getStudent(action) {
@@ -56,11 +57,27 @@ function* deleteRow(action) {
     console.log("Error deleteRow in Saga:", error);
   }
 }
+function* editInfo(action) {
+    console.log('Looking', action.payload)
+    const idOfStudentToEdit = action.payload;
+    const response = yield axios ({
+        method: 'GET',
+        url: `/api/student/${idOfStudentToEdit}`
+    })
+    console.log('looking for response', response)
+    yield put ({
+        type: 'SET_STUDENT_TO_EDIT',
+        payload:response.data[0]
+    })
+}
+
+
 function* studentSaga() {
   yield takeEvery("FETCH_STUDENT", getStudent);
   yield takeEvery("POST_STUDENT", newStudent);
   yield takeEvery("FETCH_TIME", getTime);
   yield takeEvery("FETCH_CHECKOUT", getCheckOut);
   yield takeEvery("SAGA_DELETE_ROW", deleteRow);
+  yield takeEvery('SAGA_EDIT_STUDENT', editInfo)
 }
 export default studentSaga;
