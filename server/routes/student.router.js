@@ -95,6 +95,18 @@ router.put("/checkout/:id", (req, res) => {
     });
 });
 
+router.put('/:id', (req, res) =>{
+    const idToUpdate = req.params.id;
+    const sqlText = ` UPDATE "student"
+    SET "name"=$1, "age"=$2, "address"=$3, "parent_info"=$4, "phone_number"=$5 WHERE "id"=$6`;
+    pool.query(sqlText, [req.body.name, req.body.age, req.body.address, req.body.parent_info, req.body.phone_number, idToUpdate])
+    .then((result) =>{
+        res.sendStatus(200);
+    }).catch((error) =>{
+        console.log('Error in put route for updating Database', error)
+        res.sendStatus(500)
+    })
+})
 
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
@@ -107,6 +119,23 @@ router.delete("/:id", (req, res) => {
     .query(sqlQuery, sqlValues)
     .then((dbRes) => {
       res.sendStatus(201);
+    })
+    .catch((dbErr) => {
+      console.log(`error in delete: serverside`, dbErr);
+      res.sendStatus(500);
+    });
+});
+router.delete("/:id", (req, res) => {
+  const id = req.params.id;
+  console.log("req.params", id);
+  
+  let sqlQuery = `DELETE  FROM "student"
+	WHERE "id"=$1;`;
+  let sqlValues = [id];
+  pool
+    .query(sqlQuery, sqlValues)
+    .then((dbRes) => {
+      res.sendStatus(200);
     })
     .catch((dbErr) => {
       console.log(`error in delete: serverside`, dbErr);

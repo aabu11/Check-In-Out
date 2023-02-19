@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import studentReducer from "../../redux/reducers/student.reducer";
+
 function Edit_Student() {
   const params = useParams();
   const dispatch = useDispatch();
+  const history = useHistory(); 
   const editStudentInfo = useSelector((store) => store.editStudentInfo);
   useEffect(() => {
     console.log("Params.id should work", params.id);
@@ -45,6 +47,15 @@ function Edit_Student() {
       payload: evt.target.value,
     });
   };
+  const handleSubmittButton = (evt) =>{
+        console.log("Testing Submitt Button", handleSubmittButton)
+    evt.preventDefault ();
+    dispatch({
+        type: 'UPDATE_STUDENT',
+        payload: editStudentInfo
+    })
+    history.push('/student')
+  }
   return (
     <div>
       <h2> Edit Student:</h2>
@@ -75,7 +86,7 @@ function Edit_Student() {
           value={editStudentInfo.phone_number}
           type="text"
         />
-        <button> Submit </button>
+        <button onClick={handleSubmittButton}> Submit </button>
       </form>
     </div>
   );

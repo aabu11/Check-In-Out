@@ -5,11 +5,17 @@ import swal from 'sweetalert';
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 function StudentCheck({ student }) {
   const checkIns = useSelector((store) => store.student.checkInTime);
 
   const dispatch = useDispatch();
   const history = useHistory(); 
+  useEffect (() =>{
+    dispatch({
+      type: 'FETCH_STUDENT'
+    })
+  },[])
   const checkIn = () => {
     var time = new Date();
     swal(`STUDENT IS CHECKED IN ${student.name}`);
@@ -44,8 +50,15 @@ function StudentCheck({ student }) {
     history.push(`/student/edit/${student.id}`)
    
   }
+  const deleteButton = () =>{
+    dispatch ({
+      type: "SAGA_DELETE_STUDENT",
+      payload:student.id
+    })
+  }
+  if(student.checkedIn === true){
   return (
-    <Card variant="outlined" sx={{ minWidth: 275 }}>
+    <Card variant="outlined" sx={{ minWidth: 275, backgroundColor: 'green' }}>
       <CardContent>
         <div>Child Name: {student.name}</div>
         <div>Child Age: {student.age}</div>
@@ -68,14 +81,43 @@ function StudentCheck({ student }) {
         <Button onClick={editStudentButton} size="small" >
           Edit Student Info
         </Button>
+        <Button onClick={deleteButton} size="small" >
+          Delete Student
+        </Button>
       </CardActions>
     </Card>
-  );
+  );}else{
+    return (
+      <Card variant="outlined" sx={{ minWidth: 275, }}>
+        <CardContent>
+          <div>Child Name: {student.name}</div>
+          <div>Child Age: {student.age}</div>
+        </CardContent>
+        <CardActions>
+          <Button onClick={checkIn} size="small">
+            Check In Student
+          </Button>
+          <Button
+            onClick={() => {
+              checkOut(student.id);
+            }}
+            size="small"
+          >
+            Check Out Student
+          </Button>
+          <Button onClick={resetButton} size="small" >
+            Reset
+          </Button>
+          <Button onClick={editStudentButton} size="small" >
+            Edit Student Info
+          </Button>
+          <Button onClick={deleteButton} size="small" >
+            Delete Student
+          </Button>
+        </CardActions>
+      </Card>
+    )
+  }
 }
 
 export default StudentCheck;
-
-// 1. create function
-//     create console
-//     check with button
-//     console

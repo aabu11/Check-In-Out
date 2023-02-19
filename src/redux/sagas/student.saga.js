@@ -1,5 +1,4 @@
 import axios from "axios";
-import { func } from "prop-types";
 import { takeEvery, put } from "redux-saga/effects";
 
 function* getStudent(action) {
@@ -47,30 +46,50 @@ function* getCheckOut(action) {
 
 function* deleteRow(action) {
   try {
-    const response = yield axios.delete(
-      `/api/student/${action.payload}`
-    );
+    const response = yield axios.delete(`/api/student/${action.payload}`);
     // console.log("action.payload:", action.payload.id);
-    console.log('action.payload inside deleteRow:', action.payload);
+    console.log("action.payload inside deleteRow:", action.payload);
     yield put({ type: "DELETE_ROW", payload: response.data });
   } catch (error) {
     console.log("Error deleteRow in Saga:", error);
   }
 }
 function* editInfo(action) {
-    console.log('Looking', action.payload)
-    const idOfStudentToEdit = action.payload;
-    const response = yield axios ({
-        method: 'GET',
-        url: `/api/student/${idOfStudentToEdit}`
-    })
-    console.log('looking for response', response)
-    yield put ({
-        type: 'SET_STUDENT_TO_EDIT',
-        payload:response.data[0]
-    })
+  console.log("Looking", action.payload);
+  const idOfStudentToEdit = action.payload;
+  const response = yield axios({
+    method: "GET",
+    url: `/api/student/${idOfStudentToEdit}`,
+  });
+  console.log("looking for response", response);
+  yield put({
+    type: "SET_STUDENT_TO_EDIT",
+    payload: response.data[0],
+  });
+}
+function* updateStudentInfo(action) {
+  const editedStudent = action.payload;
+  yield axios({
+    method: "PUT",
+    url: `/api/student/${editedStudent.id}`,
+    data: editedStudent,
+  });
+  yield put({
+    type: "FETCH_STUDENT",
+  });
 }
 
+function* deleteStudentInfo(action) {
+  console.log(action.payload);
+  try {
+    const response = yield axios.delete(`/api/deleteStudent/${action.payload}`);
+    // console.log("action.payload:", action.payload.id);
+    console.log("action.payload inside deleteStudentInfo:", action.payload);
+    yield put({ type: "FETCH_STUDENT" });
+  } catch (error) {
+    console.log("Error deleteStudentInfo in Saga:", error);
+  }
+}
 
 function* studentSaga() {
   yield takeEvery("FETCH_STUDENT", getStudent);
@@ -78,6 +97,8 @@ function* studentSaga() {
   yield takeEvery("FETCH_TIME", getTime);
   yield takeEvery("FETCH_CHECKOUT", getCheckOut);
   yield takeEvery("SAGA_DELETE_ROW", deleteRow);
-  yield takeEvery('SAGA_EDIT_STUDENT', editInfo)
+  yield takeEvery("SAGA_EDIT_STUDENT", editInfo);
+  yield takeEvery("UPDATE_STUDENT", updateStudentInfo);
+  yield takeEvery("SAGA_DELETE_STUDENT", deleteStudentInfo);
 }
 export default studentSaga;
